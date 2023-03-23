@@ -1,0 +1,27 @@
+pipeline {
+  agent any
+
+  stages {
+    stage('Github checkout') {
+      steps {
+        script {
+          git credentialsId: 'github',
+              url: 'git@github.com:jperrouault-school-job/iia-devops.git',
+              branch: 'master'
+        }
+      }
+    }
+    
+    stage('Maven Install') {
+      tools {
+        maven 'Maven 3.9.1'
+      }
+      
+      steps {
+        dir('TP/formation-devops') {
+          sh 'mvn clean install'
+        }
+      }
+    }
+  }
+}
